@@ -7,7 +7,7 @@ import "../styles/App.css";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(
-      !!localStorage.getItem(TOKEN_KEY)
+      localStorage.getItem(TOKEN_KEY) ? true : false
   );
 
   const logout = () => {
@@ -18,6 +18,8 @@ function App() {
 
   const loggedIn = (token) => {
     if (token) {
+      // store the token in localstorage
+      // input: key, value pair
       localStorage.setItem(TOKEN_KEY, token);
       setIsLoggedIn(true);
     }
@@ -25,9 +27,8 @@ function App() {
   return (
       <div className="App">
         <TopBar isLoggedIn={isLoggedIn} handleLogout={logout} />
-        <Main />
+        <Main isLoggedIn={isLoggedIn} handleLoggedIn={loggedIn} />
       </div>
   );
 }
-
 export default App;
