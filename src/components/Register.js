@@ -49,6 +49,8 @@ function Register(props) {
                 // case1: registered success
                 if(response.status === 200) {
                     message.success('Registration succeed!');
+                    // push() record the previous data
+                    // replace() replace the previous one
                     props.history.push('/login');
                 }
             })
