@@ -5,11 +5,9 @@ import axios from "axios";
 
 import SearchBar from "./SearchBar";
 import PhotoGallery from "./PhotoGallery";
-import CreatePostButton from "./CreatePostButton";
 import { SEARCH_KEY, BASE_URL, TOKEN_KEY } from "../constants";
 
 const { TabPane } = Tabs;
-
 
 function Home(props) {
     const [posts, setPost] = useState([]);
@@ -65,11 +63,35 @@ function Home(props) {
         }
         // image post
         if (type === "image") {
-            console.log("images -> ", posts);
-            return "images";
-        } else if (type === "video") { // video post
-            console.log("video -> ", posts);
-            return "videos";
+            const imageArr = posts
+                .filter((item) => item.type === "image")
+                .map((image) => {
+                    return {
+                        src: image.url,
+                        user: image.user,
+                        caption: image.message,
+                        thumbnail: image.url,
+                        thumbnailWidth: 300,
+                        thumbnailHeight: 200
+                    };
+                });
+
+            return <PhotoGallery images={imageArr} />;
+        } else if (type === "video") {
+            return (
+                <Row gutter={32}>
+                    {posts
+                        .filter((post) => post.type === "video")
+                        .map((post) => (
+                            <Col span={8} key={post.url}>
+                                <video src={post.url} controls={true} className="video-block" />
+                                <p>
+                                    {post.user}: {post.message}
+                                </p>
+                            </Col>
+                        ))}
+                </Row>
+            );
         }
     };
 
