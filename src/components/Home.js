@@ -1,12 +1,15 @@
+// useEffect - lifecycle for function
 import React, { useState, useEffect } from "react";
 import { Tabs, message, Row, Col, Button } from "antd";
 import axios from "axios";
 
 import SearchBar from "./SearchBar";
 import PhotoGallery from "./PhotoGallery";
+import CreatePostButton from "./CreatePostButton";
 import { SEARCH_KEY, BASE_URL, TOKEN_KEY } from "../constants";
 
 const { TabPane } = Tabs;
+
 
 function Home(props) {
     const [posts, setPost] = useState([]);
@@ -19,7 +22,8 @@ function Home(props) {
     useEffect(() => {
         const { type, keyword } = searchOption;
         fetchPost(searchOption);
-    }, [searchOption]);
+    }, [searchOption]); // what to do
+    // when search is changed, we do the fetch operation
 
     const fetchPost = (option) => {
         const { type, keyword } = option;
@@ -33,6 +37,7 @@ function Home(props) {
             url = `${BASE_URL}/search?keywords=${keyword}`;
         }
 
+        // need to pass the token to the backend
         const opt = {
             method: "GET",
             url: url,
@@ -54,39 +59,17 @@ function Home(props) {
     };
 
     const renderPosts = (type) => {
+        // empty post
         if (!posts || posts.length === 0) {
             return <div>No data!</div>;
         }
+        // image post
         if (type === "image") {
-            const imageArr = posts
-                .filter((item) => item.type === "image")
-                .map((image) => {
-                    return {
-                        src: image.url,
-                        user: image.user,
-                        caption: image.message,
-                        thumbnail: image.url,
-                        thumbnailWidth: 300,
-                        thumbnailHeight: 200
-                    };
-                });
-
-            return <PhotoGallery images={imageArr} />;
-        } else if (type === "video") {
-            return (
-                <Row gutter={32}>
-                    {posts
-                        .filter((post) => post.type === "video")
-                        .map((post) => (
-                            <Col span={8} key={post.url}>
-                                <video src={post.url} controls={true} className="video-block" />
-                                <p>
-                                    {post.user}: {post.message}
-                                </p>
-                            </Col>
-                        ))}
-                </Row>
-            );
+            console.log("images -> ", posts);
+            return "images";
+        } else if (type === "video") { // video post
+            console.log("video -> ", posts);
+            return "videos";
         }
     };
 
@@ -95,7 +78,8 @@ function Home(props) {
         <div className="home">
             <SearchBar />
             <div className="display">
-                <Tabs
+                <Tabs //change by the key, then render the page
+                    // put them in a state
                     onChange={(key) => setActiveTab(key)}
                     defaultActiveKey="image"
                     activeKey={activeTab}
