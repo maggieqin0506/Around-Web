@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'; // prop type check
 
 import Gallery from 'react-grid-gallery';
 
@@ -24,11 +24,12 @@ const wrapperStyle = {
 };
 
 function PhotoGallery(props) {
+    // create an array
     const { images } = props;
     const imagaArr = images.map( image => {
         return {
             ...image,
-            customOverlay: (
+            customOverlay: (// add style + user+ caption
                 <div style={captionStyle}>
                     <div>{`${image.user}: ${image.caption}`}</div>
                 </div>

@@ -17,7 +17,10 @@ function SearchBar(props) {
         setSearchType(searchType);
         setError("");
     };
-
+    // keyword / user + search keyword
+    // do search:
+    // inform HOME to fetch data
+    // -> pass search word + type => home props.fn
     const handleSearch = (value) => {
         // if has error
         if (searchType !== SEARCH_KEY.all && value === "") {
